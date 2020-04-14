@@ -14,6 +14,7 @@ const jDBSCAN = function() {
 	let graph = [];
 	let distance = euclidean_distance;
 	let time_distance = timestamp_distance;
+	let precision=4; // default 4 sig figs reflects typical 0.3% accuracy of spherical model
 
 	// Utils
 	function array_min(array, f) {
@@ -64,10 +65,6 @@ const jDBSCAN = function() {
 	}
 
 	function haversine_distance(point1, point2) {
-		// default 4 sig figs reflects typical 0.3% accuracy of spherical model
-		if (typeof precision === 'undefined') {
-			let precision = 4;
-		}
 
 		const R = 6371;
 		const lat1 = (point1.location.latitude * Math.PI) / 180;
@@ -228,6 +225,18 @@ const jDBSCAN = function() {
 
 		if (typeof e === 'number') {
 			eps = e;
+		}
+
+		return dbscan;
+	};
+	
+	dbscan.precision = function(e) {
+		if (arguments.length === 0) {
+			return precision;
+		}
+
+		if (typeof e === 'number') {
+			precision = e;
 		}
 
 		return dbscan;
